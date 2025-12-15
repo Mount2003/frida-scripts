@@ -1,5 +1,6 @@
 import frida
 import sys
+import shutil
 
 def display_dict(data):
     print(data.keys())
@@ -10,6 +11,9 @@ def display_dict(data):
             print(f'[i] Value of key "{key}" of type {type(data[key])}:')
             for item in data[key]:
                 print(item)
+        elif type(data[key]) == dict:
+            print(f'[i] Value of key "{key}" of type {type(data[key])}:')
+            print(f'{data[key]}')
 
 def main():
     if len(sys.argv) < 2:
@@ -30,9 +34,9 @@ def main():
     with open('test.js', 'r') as f:
         js_code = f.read()
     script = session.create_script(f'''{js_code}''')
-
+   
     def on_message(message, data):
-        print(f'---------------------------------------------------------\nMessage: \n{message}\n')
+        print(f'{"-" * shutil.get_terminal_size().columns}\nMessage: \n{message}\n')
         print(f'Data: \n{data}\n')
         if type(message) == dict:
             display_dict(message)
