@@ -33,13 +33,18 @@ def main():
         
     with open('test.js', 'r') as f:
         js_code = f.read()
-    script = session.create_script(f'''{js_code}''')
+    script = session.create_script(f'''
+    const TARGET_PROC = '{sys.argv[1].lower()}'
+    {js_code}
+    ''')
    
     def on_message(message, data):
-        print(f'{"-" * shutil.get_terminal_size().columns}\nMessage: \n{message}\n')
-        print(f'Data: \n{data}\n')
-        if type(message) == dict:
-            display_dict(message)
+        if data != None:
+            print(f'[i] This is the data section: ')
+        try: 
+            print(f'{message["payload"]}')
+        except KeyError:
+            print(message)
 
     script.on('message', on_message)
     script.load()
