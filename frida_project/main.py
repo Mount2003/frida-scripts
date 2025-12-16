@@ -44,7 +44,7 @@ def main():
         try: 
             print(f'{message["payload"]}')
         except KeyError:
-            print(message)
+            print(f'{message}')
 
     script.on('message', on_message)
     script.load()
